@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="HttpClientEndpointsTabState">
-    <option name="requestToText" value="&lt;CachedHttpClientTabRequests&gt;&#10;  &lt;entry key=&quot;ce3373084a39958b469d31d6abcb6898d6260ac2&quot; value=&quot;###&amp;#10;GET http://localhost:8080/tweets/&quot; /&gt;&#10;  &lt;entry key=&quot;4f5693da12ecd0f4398ce080b81b006b66da2458&quot; value=&quot;###&amp;#10;POST http://localhost:8080/tweets/&amp;#10;Content-Type: application/json&amp;#10;&amp;#10;{&amp;#10;  &amp;quot;name&amp;quot;: &amp;quot;&amp;quot;,&amp;#10;  &amp;quot;msg&amp;quot;: &amp;quot;&amp;quot;&amp;#10;}&quot; /&gt;&#10;&lt;/CachedHttpClientTabRequests&gt;" />
+    <option name="requestToText" value="&lt;CachedHttpClientTabRequests&gt;&#10;  &lt;entry key=&quot;4f5693da12ecd0f4398ce080b81b006b66da2458&quot; value=&quot;###&amp;#10;POST http://localhost:8080/tweets/&amp;#10;Content-Type: application/json&amp;#10;&amp;#10;{&amp;#10;  &amp;quot;name&amp;quot;: &amp;quot;&amp;quot;,&amp;#10;  &amp;quot;msg&amp;quot;: &amp;quot;&amp;quot;&amp;#10;}&quot; /&gt;&#10;&lt;/CachedHttpClientTabRequests&gt;" />
   </component>
 </project>

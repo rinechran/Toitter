@@ -6,6 +6,5 @@ import org.springframework.stereotype.Component
 
 @Component
 interface TweatRepository :  JpaRepository<TweatEntity, Long> {
-
     fun findByNameContainingAndMsgContaining(name: String, msg: String): List<TweatEntity>
 }
