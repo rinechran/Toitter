@@ -11,8 +11,10 @@ import java.util.UUID
 data class UserEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    val id: UUID? = null,
+    val uuid: UUID? = null,
     var name: String = "",
     var email: String = "",
     var password: String = ""
+
+
 )

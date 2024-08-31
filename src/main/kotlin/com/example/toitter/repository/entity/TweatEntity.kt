@@ -1,15 +1,20 @@
 package com.example.toitter.repository.entity
 
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
+import jakarta.persistence.*
+import java.time.LocalDateTime
+import java.util.*
 
 @Entity
 data class TweatEntity(
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long? = null,
-    var name: String,
-    val msg: String
+    @GeneratedValue(strategy = GenerationType.UUID)
+    val uuid: UUID? = null,
+
+    @ManyToOne
+    @JoinColumn(name = "user_uuid")
+    var user: UserEntity,
+
+    var msg: String,
+
+    var createDataAt : LocalDateTime = LocalDateTime.now(),
 )

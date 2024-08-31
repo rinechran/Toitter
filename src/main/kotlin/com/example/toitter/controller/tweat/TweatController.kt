@@ -1,33 +1,40 @@
 package com.example.toitter.controller.tweat
 
-import com.example.toitter.repository.entity.TweatEntity
+import com.example.toitter.service.TweatDto
 import com.example.toitter.service.TweatService
-import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.util.UUID
+
+data class CreateOrUpdateTweatRequest(
+    val uuid : UUID,
+    val msg: String
+)
 
 
 @RestController
 @RequestMapping("/tweets")
-class TweatController(private val tweatService: TweatService) {
+class TweatController(
+    private val tweatService: TweatService
+) {
 
     @GetMapping("/")
-    fun tweatList(@RequestParam(required = false) name: String?, @RequestParam(required = false) msg: String?): List<TweatEntity> {
+    fun tweatList(@RequestParam(required = false) name: String?, @RequestParam(required = false) msg: String?): List<TweatDto> {
         return tweatService.getList(name, msg)
     }
-    data class CreateTweatRequest(
-        val name: String,
-        val msg: String
-    )
-    @PostMapping("/")
-    fun saveNewTweat(@RequestBody request: CreateTweatRequest): ResponseEntity<TweatEntity> {
-        val temp = TweatEntity(
-            name = request.name,
-            msg = request.msg
-        )
-        val newTweat = tweatService.create(temp)
-        return ResponseEntity.status(HttpStatus.CREATED).body(newTweat)
-    }
 
+    @PostMapping("/")
+    fun saveNewTweat(@RequestBody request: CreateOrUpdateTweatRequest):TweatDto {
+        val newTweat = tweatService.create(
+            request.uuid,
+            TweatDto(userUUID = request.uuid, msg = request.msg,null,null,null)
+        )
+        return newTweat
+    }
+    @PutMapping("/")
+    fun updateTweetat(@RequestBody request:CreateOrUpdateTweatRequest):TweatDto {
+        val newTweat = tweatService.updateMsg(request.uuid, request.msg)
+
+        return newTweat
+    }
 
 }
