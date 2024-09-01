@@ -1,20 +1,15 @@
 package com.example.toitter.repository.entity
 
 import jakarta.persistence.*
-import java.time.LocalDateTime
-import java.util.*
 
-@Entity
+@Entity(name = "tweat")
 data class TweatEntity(
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    val uuid: UUID? = null,
 
     @ManyToOne
-    @JoinColumn(name = "user_uuid")
-    var user: UserEntity,
+    @JoinColumn(name = "user_uuid",referencedColumnName = "uuid")
+    var usersEntity: UsersEntity,
 
-    var msg: String,
+    @Column(name = "msg")
+    var msg: String = "",
 
-    var createDataAt : LocalDateTime = LocalDateTime.now(),
-)
+) : BaseEntity()

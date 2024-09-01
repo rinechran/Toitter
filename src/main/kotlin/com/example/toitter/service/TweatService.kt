@@ -1,69 +1,103 @@
 package com.example.toitter.service
 
 import com.example.toitter.config.ResourceException
+import com.example.toitter.dto.TweatDto
+import com.example.toitter.dto.UserDto
 import com.example.toitter.repository.TweatRepository
-import com.example.toitter.repository.UserRepository
+import com.example.toitter.repository.UsersRepository
 import com.example.toitter.repository.entity.TweatEntity
-import com.example.toitter.repository.entity.UserEntity
+import com.example.toitter.repository.entity.UsersEntity
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
-import java.time.LocalDateTime
 import java.util.UUID
-import javax.naming.Name
 
 
-data class TweatDto(
-    val userUUID: UUID,
-    val msg: String,
-    val name : String?,
-    val tweatUUID: UUID?,
-    val createDataAt : LocalDateTime?
-)
 
 @Service
 class TweatService(
-    private val tweatRepository: TweatRepository,
-    private val userRepository: UserRepository
-
+    private val tweatRepository: TweatRepository
 ) {
 
     fun getList(name: String?, msg: String?): List<TweatDto> {
         val tweatEntityList = if (name != null || msg != null) {
-            tweatRepository.findByUser_NameContainingAndMsgContaining(name ?: "", msg ?: "")
+            tweatRepository.findByUsersEntity_NameContainingAndMsgContainingAndIsDeleteFalseOrderByCreatedAtAsc(name , msg )
         } else {
-            tweatRepository.findAll()
+            tweatRepository.findAllByIsDeleteFalseOrderByCreatedAtDesc()
         }
 
         return tweatEntityList.map { tweatEntity ->
             TweatDto(
-                userUUID = tweatEntity.user.uuid!!,
+                userUUID = tweatEntity.usersEntity.uuid!!,
                 msg = tweatEntity.msg,
-                name = tweatEntity.user.name,
-                tweatUUID = tweatEntity.uuid,
-                createDataAt = tweatEntity.createDataAt
+                name = tweatEntity.usersEntity.name,
+                tweatUUID = tweatEntity.uuid!!,
+                isDeleted = tweatEntity.isDelete,
+                createDataAt = tweatEntity.createdAt,
+                updateDataAt = tweatEntity.updatedAt
             )
         }
     }
 
     @Transactional
-    fun create(userUUID: UUID , tweat: TweatDto): TweatDto {
-        val user : UserEntity = userRepository.findByUuid(userUUID) ?: throw ResourceException(404, "User not found");
-        val tweatEntity  = TweatEntity(null,user,tweat.msg)
+    fun create(userDto : UserDto , msg : String): TweatDto {
+        val usersEntity = UsersEntity()
+        usersEntity.uuid = userDto.uuid
+
+        val tweatEntity  = TweatEntity(usersEntity,msg)
         tweatRepository.save(tweatEntity)
-        return TweatDto( userUUID,tweat.msg,user.name,tweatEntity.uuid,tweatEntity.createDataAt)
+        return TweatDto(
+            userUUID = tweatEntity.usersEntity.uuid!!,
+            msg = tweatEntity.msg,
+            name = tweatEntity.usersEntity.name,
+            tweatUUID = tweatEntity.uuid!!,
+            createDataAt = tweatEntity.createdAt,
+            updateDataAt = tweatEntity.updatedAt,
+            isDeleted = tweatEntity.isDelete,
+        )
+
+
     }
     @Transactional
-    fun updateMsg(tweatUUID: UUID, newMsg: String): TweatDto {
-        val tweatEntity = tweatRepository.findByUuid(tweatUUID) ?: throw ResourceException(404, "Tweat not found")
+    fun updateMsg(tweatUUID: UUID, newMsg: String): TweatDto? {
+        val tweatEntity = tweatRepository.findByUuid(tweatUUID) ?: return null
         tweatEntity.msg = newMsg
         tweatRepository.save(tweatEntity)
         return TweatDto(
-            userUUID = tweatEntity.user.uuid!!,
+            userUUID = tweatEntity.usersEntity.uuid!!,
             tweatUUID = tweatEntity.uuid!!,
             msg = tweatEntity.msg,
-            name = tweatEntity.user.name,
-            createDataAt = tweatEntity.createDataAt
+            name = tweatEntity.usersEntity.name,
+            isDeleted = tweatEntity.isDelete,
+            createDataAt = tweatEntity.createdAt,
+            updateDataAt = tweatEntity.updatedAt
         )
     }
+    @Transactional
+    fun deleteTweat(tweatDto: TweatDto) : TweatDto? {
+        val tweatEntity = tweatRepository.findByUuid(tweatDto.tweatUUID) ?: return null
+        tweatEntity.isDelete = true
+        tweatRepository.save(tweatEntity)
+        return TweatDto(
+            userUUID = tweatEntity.usersEntity.uuid!!,
+            tweatUUID = tweatEntity.uuid!!,
+            msg = tweatEntity.msg,
+            name = tweatEntity.usersEntity.name,
+            isDeleted = tweatEntity.isDelete,
+            createDataAt = tweatEntity.createdAt,
+            updateDataAt = tweatEntity.updatedAt
+        )
 
+    }
+    fun getFindByUUid(uuid: UUID) : TweatDto? {
+        val tweatEntity = tweatRepository.findByUuid(uuid) ?: return null
+        return TweatDto(
+            userUUID = tweatEntity.usersEntity.uuid!!,
+            tweatUUID = tweatEntity.uuid!!,
+            msg = tweatEntity.msg,
+            name = tweatEntity.usersEntity.name,
+            isDeleted = tweatEntity.isDelete,
+            createDataAt = tweatEntity.createdAt,
+            updateDataAt = tweatEntity.updatedAt
+        )
+    }
 }

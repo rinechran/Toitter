@@ -174,4 +174,6 @@ application.properties
 
 ### VS Code ###
 .vscode/
-
+.gradle
+build/*
+.gradle
