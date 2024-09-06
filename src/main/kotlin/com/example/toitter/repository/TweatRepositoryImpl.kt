@@ -30,9 +30,14 @@ class TweatCustomRepositoryImpl(
          val combinedCondition = listOfNotNull(nameCondition, msgCondition)
              .fold(tweatEntity.isDelete.isFalse) { acc, condition -> acc.and(condition) }
 
-         return queryFactory
+         var query = queryFactory
              .selectFrom(tweatEntity)
-             .join(usersEntity).on(tweatEntity.usersEntity.eq(usersEntity))
+
+         if (nameCondition != null) {
+             query = query.join(usersEntity).on(tweatEntity.usersEntity.eq(usersEntity))
+         }
+
+         return query
              .where(combinedCondition)
              .orderBy(tweatEntity.createdAt.asc())
              .fetch()
