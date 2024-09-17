@@ -10,6 +10,6 @@ data class TweatEntity(
     var usersEntity: UsersEntity,
 
     @Column(name = "msg")
-    var msg: String = "",
+    var msg: String,
 
 ) : BaseEntity()

@@ -8,12 +8,12 @@ import java.util.UUID
 @Entity(name = "users")
 class UsersEntity(
     @Column
-    var name: String = "",
+    var name: String,
 
     @Column
-    var email: String = "",
+    var email: String,
 
     @Column
-    var password: String = ""
+    var password: String
 
 ): BaseEntity()

@@ -27,21 +27,21 @@ class CommentController(
     @PostMapping("/")
     fun createComment(@RequestBody request : CreateCommentRequest): CommentDto {
 
-        tweatService.getFindByUUid(request.tweatUuid)
+        val tweat = tweatService.getFindByUUid(request.tweatUuid)
             ?: throw ResourceException(404, "Tweat not found")
 
-        userService.getFindByUUid(request.userUuid)
+        val user = userService.getFindByUUid(request.userUuid)
             ?: throw ResourceException(404, "User not found")
 
-        request.parentCommentUuid?.let { parentUuid ->
+        val comment = request.parentCommentUuid?.let { parentUuid ->
             commentService.findByUUid(parentUuid)
                 ?: throw ResourceException(404, "Parent comment not found")
         }
 
         val createComment = commentService.createComment(
             comment = request.comment,
-            tweatUuid = request.tweatUuid,
-            userUuid = request.userUuid,
+            tweat,
+            user,
             parentCommentUuid = request.parentCommentUuid
         ) ?: throw ResourceException(300, "Create comment Error")
 

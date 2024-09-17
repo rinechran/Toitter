@@ -38,7 +38,11 @@ class TweatService(
 
     @Transactional
     fun create(userDto : UserDto , msg : String): TweatDto {
-        val usersEntity = UsersEntity()
+        val usersEntity = UsersEntity(
+            name = userDto.name,
+            email = userDto.email,
+            password = userDto.email
+        )
         usersEntity.uuid = userDto.uuid
 
         val tweatEntity  = TweatEntity(usersEntity,msg)

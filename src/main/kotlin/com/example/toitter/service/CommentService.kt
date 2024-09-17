@@ -1,6 +1,8 @@
 package com.example.toitter.service
 
 import com.example.toitter.dto.CommentDto
+import com.example.toitter.dto.TweatDto
+import com.example.toitter.dto.UserDto
 import com.example.toitter.repository.CommentRepository
 import com.example.toitter.repository.entity.CommentEntity
 import com.example.toitter.repository.entity.TweatEntity
@@ -51,17 +53,16 @@ class CommentService(
 
 
     @Transactional
-    fun createComment(comment : String, tweatUuid : UUID, userUuid  : UUID, parentCommentUuid: UUID?): CommentDto? {
+    fun createComment(comment : String, tweatUuid : TweatDto, userUuid  : UserDto, parentCommentUuid: UUID?): CommentDto? {
         var parentCommentEntity: CommentEntity? = null
         if (parentCommentUuid!=null){
             parentCommentEntity = commentRepository.findByUuid(parentCommentUuid)
             ?: return null
         }
-        val userEntity = UsersEntity()
-        userEntity.uuid = userUuid
+        val userEntity = UsersEntity(userUuid.name,userUuid.email,userUuid.password)
+        userEntity.uuid = userUuid.uuid;
 
-        val tweatEntity = TweatEntity(userEntity)
-        tweatEntity.uuid = tweatUuid
+        val tweatEntity = TweatEntity(userEntity,comment);
 
         val newComment = CommentEntity(
             userUuid = userEntity,
@@ -73,8 +74,8 @@ class CommentService(
         commentRepository.save(newComment)
 
         return CommentDto(
-            tweat_uuid = userUuid,
-            user_uuid = tweatUuid,
+            tweat_uuid = tweatEntity.uuid!! ,
+            user_uuid = userUuid.uuid,
             comment = newComment.comment,
             parentCommentUuid = newComment.parentComment?.uuid,
             uuid = newComment.uuid!!,
