@@ -1,4 +1,4 @@
-package com.example.toitter.config
+package com.example.toitter.appException
 
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.http.HttpStatus

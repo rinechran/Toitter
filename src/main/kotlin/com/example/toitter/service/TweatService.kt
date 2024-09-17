@@ -1,10 +1,8 @@
 package com.example.toitter.service
 
-import com.example.toitter.config.ResourceException
 import com.example.toitter.dto.TweatDto
 import com.example.toitter.dto.UserDto
 import com.example.toitter.repository.TweatRepository
-import com.example.toitter.repository.UsersRepository
 import com.example.toitter.repository.entity.TweatEntity
 import com.example.toitter.repository.entity.UsersEntity
 import jakarta.transaction.Transactional

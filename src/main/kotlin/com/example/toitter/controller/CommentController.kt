@@ -1,6 +1,6 @@
 package com.example.toitter.controller
 
-import com.example.toitter.config.ResourceException
+import com.example.toitter.appException.ResourceException
 import com.example.toitter.dto.CommentDto
 import com.example.toitter.dto.CreateCommentRequest
 import com.example.toitter.dto.UpdateCommentRequest

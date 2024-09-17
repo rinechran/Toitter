@@ -5,6 +5,7 @@ import com.example.toitter.repository.entity.QUsersEntity.usersEntity
 import com.example.toitter.repository.entity.TweatEntity
 import com.querydsl.jpa.impl.JPAQueryFactory
 import org.springframework.stereotype.Component
+import org.springframework.stereotype.Repository
 
 
 interface TweatCustomRepository {
@@ -14,7 +15,7 @@ interface TweatCustomRepository {
     ): List<TweatEntity>
 }
 
-@Component
+@Repository
 class TweatCustomRepositoryImpl(
     private val queryFactory: JPAQueryFactory
 ) : TweatCustomRepository {

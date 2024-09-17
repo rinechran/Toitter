@@ -1,7 +1,7 @@
 package com.example.toitter.controller
 
 import CreateTweatRequest
-import com.example.toitter.config.ResourceException
+import com.example.toitter.appException.ResourceException
 import com.example.toitter.dto.DeleteTweatRequest
 import com.example.toitter.dto.DeleteTweatResponse
 import com.example.toitter.dto.TweatDto

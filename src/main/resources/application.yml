@@ -7,9 +7,9 @@ spring:
       hibernate:
         show_sql: true
   datasource:
-    url: jdbc:mysql://192.168.31.12:3307/test
-    username: test
-    password: 1
+    url: jdbc:mysql://192.168.68.111:3306/test
+    username: rinechran
+    password: rinechran
     driver-class-name: com.mysql.cj.jdbc.Driver
 
 management:
