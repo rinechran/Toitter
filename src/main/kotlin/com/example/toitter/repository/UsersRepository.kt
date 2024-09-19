@@ -10,5 +10,6 @@ interface UsersRepository : JpaRepository<UsersEntity, UUID> {
     fun findByEmail(email: String): UsersEntity?
     fun findByUuid(uuid: UUID): UsersEntity?
     fun findAllByIsDeleteFalse(): List<UsersEntity>
+    fun findByEmailAndPasswordAndIsDeleteFalse(email: String, password: String): UsersEntity?
 
 }

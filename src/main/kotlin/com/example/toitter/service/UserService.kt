@@ -48,6 +48,16 @@ class UserService(
         )
     }
 
+    fun findUserByEmailAndPasswordAndDeleteIsNot(email: String , password: String ): UserDto?{
+        val userEntity = userRepository.findByEmailAndPasswordAndIsDeleteFalse(email,password) ?: return null
+        return UserDto(userEntity.uuid!!,
+            userEntity.name,
+            userEntity.email,
+            userEntity.password,
+            isDelete = userEntity.isDelete
+        )
+    }
+
     @Transactional
     fun deleteByUser(userDto: UserDto): UserDto?{
         var userEntity = userRepository.findByUuid(userDto.uuid) ?: return null

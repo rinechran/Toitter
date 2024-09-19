@@ -18,24 +18,24 @@ class TweatController(
     private val userService: UserService
 ) {
 
-    @GetMapping("/")
+    @GetMapping("")
     fun tweatList(@RequestParam(required = false) name: String?, @RequestParam(required = false) msg: String?): List<TweatDto> {
         return tweatService.getList(name, msg)
     }
 
-    @PostMapping("/")
+    @PostMapping("")
     fun saveNewTweat(@RequestBody request: CreateTweatRequest): TweatDto {
         val userDto = userService.getFindByUUid(request.uuid) ?: throw ResourceException(404, "User not found");
         val newTweat = tweatService.create(userDto, msg = request.msg)
         return newTweat
     }
-    @PutMapping("/")
+    @PutMapping("")
     fun updateTweet(@RequestBody request: UpdateTweatRequest): TweatDto {
         val tweatEntity = tweatService.getFindByUUid(request.uuid) ?: throw ResourceException(404, "Tweet not found");
         val newTweat = tweatService.updateMsg(tweatEntity.tweatUUID, request.msg)
         return newTweat!!
     }
-    @DeleteMapping("/")
+    @DeleteMapping("")
     fun deleteTweet(@RequestParam request : DeleteTweatRequest): DeleteTweatResponse {
         val tweatEntity = tweatService.getFindByUUid(request.uuid) ?: throw ResourceException(404, "Tweat not found")
         tweatService.deleteTweat(tweatEntity)

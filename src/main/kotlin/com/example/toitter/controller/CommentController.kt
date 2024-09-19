@@ -19,12 +19,12 @@ class CommentController(
     val userService: UserService
 ){
 
-    @GetMapping("/")
+    @GetMapping("")
     fun listComment(@RequestParam(required = true) tweatUuid: String?,): List<CommentDto> {
         return commentService.getComment(UUID.fromString(tweatUuid))
     }
 
-    @PostMapping("/")
+    @PostMapping("")
     fun createComment(@RequestBody request : CreateCommentRequest): CommentDto {
 
         val tweat = tweatService.getFindByUUid(request.tweatUuid)
@@ -48,7 +48,7 @@ class CommentController(
         return createComment
 
     }
-    @PutMapping("/")
+    @PutMapping("")
     fun updateComment(@RequestBody request: UpdateCommentRequest) : CommentDto{
         val comment  = commentService.findByUUid(request.uuid)
             ?: throw ResourceException(404, "Comment not found")
