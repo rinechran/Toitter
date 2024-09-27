@@ -2,6 +2,7 @@ package com.example.toitter.controller
 
 import com.example.toitter.appException.ResourceException
 import com.example.toitter.dto.LoginAuthRequest
+import com.example.toitter.dto.LoginAuthResponse
 import com.example.toitter.service.AuthService
 import org.springframework.boot.autoconfigure.security.SecurityProperties
 import org.springframework.web.bind.annotation.PostMapping
@@ -16,11 +17,14 @@ class AuthController(
 ){
 
     @PostMapping("")
-    fun login(@RequestBody user: LoginAuthRequest) : String{
+    fun login(@RequestBody user: LoginAuthRequest) : LoginAuthResponse {
         val findUser = authService.findUser(user.email, user.password);
         if (findUser != null){
             throw ResourceException(404, "Not Find Login")
         }
-        return ""
+        val loginAuthResponse : LoginAuthResponse = LoginAuthResponse(
+            message = "Login successful"
+        )
+        return loginAuthResponse;
     }
 }
